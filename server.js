@@ -6,11 +6,15 @@ const corsOptions = require ('./config/corsOptions')
 const {logger} = require('./middleware/logEvents')
 const errorHandler = require('./middleware/errorHandler')
 const verifyJWT = require('./middleware/verifyJWT')
+const credentials = require('./middleware/credentials')
 const cookieParser = require('cookie-parser')
 const PORT = process.env.PORT || 3500
 
 //custom middleware
 app.use(logger)
+
+//handle options credentials check - before CORS, and fetch cookies credentials requirement
+app.use(credentials)
 
 //apply third party middleware 
 app.use(cors(corsOptions))
@@ -57,10 +61,6 @@ app.all('*', (req, res) => { //formerly used app.get('/*)
 app.use(errorHandler)
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}...`))
-
-
-
-
 
 
 // setTimeout(() => {
