@@ -1,0 +1,3 @@
+23-05-01	03:56:04 	58686030-e7c9-4693-970b-1ab587095e68	Error : Not allowed by CORS
+23-05-01	13:57:54 	6ad29406-6052-4b75-97b0-5a15717a8dc5	ReferenceError : dara is not defined
+23-05-22	11:27:31 	525867e4-2698-427d-95a3-7ad5f73dc772	TypeError : data.employees is not a function
