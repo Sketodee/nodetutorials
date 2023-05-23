@@ -24,7 +24,10 @@ const handleNewUser = async (req, res) => {
         //store the new user
         const newUser = {
             "username": user,
-            "password" : hashedPassword
+            "roles" : {
+                "User" : 2001
+            },
+            "password" : hashedPassword,
         }
         //write the registered user to our mockDB (which is a file here)
         usersDB.setUsers([...usersDB.users, newUser])
@@ -40,4 +43,4 @@ const handleNewUser = async (req, res) => {
 
 }
 
-module.exports = ( {handleNewUser})
+module.exports = {handleNewUser}

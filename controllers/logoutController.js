@@ -30,8 +30,9 @@ const handleLogout =  async (req, res) => {
      usersDB.setUsers([...otherUsers, currentUser])
      await fsPromises.writeFile(path.join(__dirname, '..', 'model', 'users.json'), JSON.stringify(usersDB.users))
     
-    res.clearCookie('jwt', {httpOnly: true})  //in production, add secure: true, so that it is true for https also
+     //when using thunder client, remove samesite and secure, because the cookies won't clear on logout if they still remain there
+    res.clearCookie('jwt', {httpOnly: true, secure: true, sameSite: 'None'})  //in production, add secure: true, so that it is true for https also
     res.sendStatus(204)
-}
+} 
 
-module.exports = ({handleLogout})
+module.exports = {handleLogout}

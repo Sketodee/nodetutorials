@@ -28,9 +28,15 @@ const handleLogin = async (req, res) => {
      const match = await bcrypt.compare(pwd, foundUser.password)
 
     if(match) {
+        //grab the roles of the user, (values only) 
+        const roles = Object.values(foundUser.roles)
         //create JWT
         const accessToken = jwt.sign(
-            {'username': foundUser.username},
+            { "UserInfo" : {
+                    'username': foundUser.username ,
+                    "roles": roles
+                }
+            },
             process.env.ACCESS_TOKEN_SECRET,
             {'expiresIn' : '30s'}
         );
@@ -50,7 +56,8 @@ const handleLogin = async (req, res) => {
         await fsPromises.writeFile(path.join(__dirname, '..', 'model', 'users.json'), JSON.stringify(usersDB.users))
         
         //send token as a cookie 
-        res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24 * 60 * 60* 1000})
+         //when using thunder client, remove samesite and secure, because the cookies won't clear on logout if they still remain there
+        res.cookie('jwt', refreshToken, {httpOnly: true,  sameSite: 'None', secure: true, maxAge: 24 * 60 * 60* 1000})
         console.log(accessToken)
         res.json({'success' : ` User ${user} is logged in`, 'accessToken' : accessToken})
     } else {
@@ -59,4 +66,4 @@ const handleLogin = async (req, res) => {
 
 }
 
-module.exports = ({handleLogin})
+module.exports = {handleLogin}

@@ -29,8 +29,13 @@ const handleRefreshToken =  (req, res) => {
         process.env.REFRESH_TOKEN_SECRET, 
         (err, decoded) => {
             if(err || foundUser.username != decoded.username)  return res.sendStatus(403) //username in the jwt was declared when creating the token in authcontroller 
+            const roles = Object.values(foundUser.roles)
             const accessToken = jwt.sign(
-                {'username' : decoded.username}, 
+                { "UserInfo" : {
+                    'username': decoded.username ,
+                    "roles": roles
+                }
+            },
                 process.env.ACCESS_TOKEN_SECRET, 
                 {expiresIn: '30s'}
             )
@@ -41,4 +46,4 @@ const handleRefreshToken =  (req, res) => {
 
 }
 
-module.exports = ({handleRefreshToken})
+module.exports = {handleRefreshToken}
